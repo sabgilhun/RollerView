@@ -1,40 +1,37 @@
 package com.sabgil.roller.models
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Rect
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 
 class Lane(
-    context: Context,
-    var items: List<RollingItem>
+    private val items: List<Drawable>
 ) {
-    val length: Int = items.foldRight(0) { item, acc -> item.height + acc }
-    val width: Int = items.foldRight(0) { item, acc ->
-        if (acc < item.width) item.width
-        else acc
+    var length: Int = 0
+    var combinedBitmap: Bitmap? = null
+
+    fun resize(width: Int, height: Int) {
+        length = height * items.size
+        combinedBitmap(width, height, length)
     }
-    var combinedImage: Drawable
 
-    init {
+    private fun combinedBitmap(width: Int, height: Int, length: Int) {
+        combinedBitmap = Bitmap.createBitmap(
+            width, length,
+            Bitmap.Config.ARGB_8888
+        ).apply {
+            var accLength = 0
+            val canvas = Canvas(this)
 
-        val bitmap = Bitmap.createBitmap(width, length, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        var accLength = 0
-        items.forEach {
-            with(it.drawable) {
-                bounds = Rect(
-                    (0),
-                    accLength,
-                    intrinsicWidth,
-                    (accLength + intrinsicHeight)
+            items.forEach {
+                it.bounds = Rect(
+                    0, accLength,
+                    width, accLength + height
                 )
-                draw(canvas)
-                accLength += intrinsicHeight
+                it.draw(canvas)
+                accLength += height
             }
         }
-        combinedImage = BitmapDrawable(context.resources, bitmap)
     }
 }

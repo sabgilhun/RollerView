@@ -2,11 +2,11 @@ package com.sabgil.roller.models
 
 import android.content.Context
 import androidx.annotation.DrawableRes
+import androidx.core.content.ContextCompat
 import com.sabgil.roller.engines.NormalRollerEngine
 import com.sabgil.roller.engines.RollerEngine
 import com.sabgil.roller.framemappers.FlatFrame
 import com.sabgil.roller.framemappers.Frame
-import com.sabgil.roller.resIdToRollingItem
 
 class Rolling private constructor(
     val rollerEngine: RollerEngine,
@@ -18,18 +18,20 @@ class Rolling private constructor(
 
     @RollingSetupMarker
     class RollingSetup {
-        var rollerEngine: RollerEngine = NormalRollerEngine()
-        var frame: Frame = FlatFrame()
-        var lane: Lane? = null
+        private var rollerEngine: RollerEngine = NormalRollerEngine()
+        private var frame: Frame = FlatFrame()
+        private var lane: Lane? = null
 
         fun images(context: Context, @DrawableRes vararg drawableId: Int) {
-            lane = Lane(context, drawableId.map { resIdToRollingItem(context, it) }.toList())
+            lane = Lane(drawableId.map {
+                requireNotNull(ContextCompat.getDrawable(context, it))
+            }.toList())
         }
 
         fun build() = Rolling(
             rollerEngine = this.rollerEngine,
             frame = this.frame,
-            lane = this.lane!!
+            lane = requireNotNull(this.lane) { "lane value cannot be null" }
         )
     }
 }

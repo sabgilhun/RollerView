@@ -3,7 +3,6 @@ package com.sabgil.roller
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.sabgil.roller.engines.Status
 import com.sabgil.roller.models.Rolling
@@ -28,23 +27,33 @@ class RollerView : View {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (rolling?.rollerEngine?.status == Status.STARTED) {
-            rolling?.frame?.draw(canvas, rolling?.rollerEngine?.output!!, rolling?.lane!!)
-            invalidate()
-        } else if (rolling?.rollerEngine?.status == Status.FINISHED) {
-            rolling?.frame?.draw(canvas, 1f, rolling?.lane!!)
+        rolling?.let {
+            when (it.rollerEngine.status) {
+                Status.READY -> {
+                    /* do nothing */
+                }
+                Status.STARTED -> {
+                    it.frame.draw(canvas, it.rollerEngine.output, it.lane)
+                    invalidate()
+                }
+                Status.FINISHED -> {
+                    it.frame.draw(canvas, 1f, it.lane)
+                }
+            }
         }
-    }
-
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        rolling?.frame?.resize(width, height)
     }
 
     fun roll(rolling: Rolling) {
         this.rolling = rolling
         rolling.rollerEngine.start()
-        rolling.frame.resize(width, height)
+        syncSize()
         invalidate()
+    }
+
+    private fun syncSize() {
+        this.rolling?.let {
+            it.frame.resize(width, height)
+            it.lane.resize(width, height)
+        }
     }
 }

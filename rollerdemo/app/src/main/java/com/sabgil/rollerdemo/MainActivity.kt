@@ -17,12 +17,26 @@ class MainActivity : AppCompatActivity() {
             images(
                 this@MainActivity,
                 R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
                 R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
                 R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
                 R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
                 R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
+                R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
+                R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
+                R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
+                R.drawable.ic_launcher_background,
+                R.drawable.ic_launcher_foreground,
                 R.drawable.ic_launcher_background
             )
+
         }
         startButton.setOnClickListener {
             rollerView.roll(rolling)
