@@ -6,13 +6,23 @@
 	android:layout_height="match_parent"
 	tools:context=".MainActivity">
 	
-	<TextView
-		android:layout_width="wrap_content"
-		android:layout_height="wrap_content"
-		android:text="Hello World!"
+	<com.sabgil.roller.RollerView
+		android:id="@+id/rollerView"
+		android:layout_width="108dp"
+		android:layout_height="108dp"
+		android:background="@color/colorAccent"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintLeft_toLeftOf="parent"
 		app:layout_constraintRight_toRightOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
-
+	
+	<Button
+		android:id="@+id/startButton"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="start!"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/rollerView" />
 </androidx.constraintlayout.widget.ConstraintLayout>
