@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import android.view.View
-import com.sabgil.roller.engines.Status
+import com.sabgil.roller.models.RollerEngineStatus
 import com.sabgil.roller.models.Rolling
 
 class RollerView : View {
@@ -29,15 +29,15 @@ class RollerView : View {
         super.onDraw(canvas)
         rolling?.let {
             when (it.rollerEngine.status) {
-                Status.READY -> {
+                RollerEngineStatus.READY -> {
                     it.focusFrame.draw(canvas, lastOutput)
                 }
-                Status.STARTED -> {
+                RollerEngineStatus.STARTED -> {
                     lastOutput = it.rollerEngine.output
                     it.focusFrame.draw(canvas, lastOutput)
                     invalidate()
                 }
-                Status.FINISHED -> {
+                RollerEngineStatus.FINISHED -> {
                     it.focusFrame.draw(canvas, lastOutput)
                 }
             }

@@ -1,14 +1,16 @@
 package com.sabgil.roller.engines
 
+import com.sabgil.roller.models.RollerEngineStatus
+
 interface RollerEngine {
 
-    val status: Status
+    val status: RollerEngineStatus
 
     val output: Float
 
-    fun start()
-}
+    var onRollingStart: (() -> Unit)?
 
-enum class Status {
-    READY, STARTED, FINISHED
+    var onRollingEnd: (() -> Unit)?
+
+    fun start()
 }

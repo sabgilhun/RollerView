@@ -19,17 +19,36 @@ class Rolling private constructor(
 
     @RollingSetupMarker
     class RollingSetup {
-        private var rollerEngine: RollerEngine = NormalRollerEngine()
+        private var rollerEngineSetup: RollerEngineSetup = RollerEngineSetup()
         private var focusFrameSetup: FocusFrameSetup = FocusFrameSetup()
 
-        fun focusFrame(block: FocusFrameSetup.() -> Unit) {
+        fun engine(block: RollerEngineSetup.() -> Unit) {
+            rollerEngineSetup.block()
+        }
+
+        fun frame(block: FocusFrameSetup.() -> Unit) {
             focusFrameSetup.block()
         }
 
         fun build() = Rolling(
-            rollerEngine = this.rollerEngine,
+            rollerEngine = this.rollerEngineSetup.build(),
             focusFrame = this.focusFrameSetup.build()
         )
+    }
+
+    @RollingSetupMarker
+    class RollerEngineSetup {
+        var type: RollerEngineType = RollerEngineType.NORMAL
+        var duration: Long = 1000L
+        var onRollingStart: (() -> Unit)? = null
+        var onRollingEnd: (() -> Unit)? = null
+
+        fun build() = when (type) {
+            RollerEngineType.NORMAL -> NormalRollerEngine(duration).apply {
+                this.onRollingStart = this@RollerEngineSetup.onRollingStart
+                this.onRollingEnd = this@RollerEngineSetup.onRollingEnd
+            }
+        }
     }
 
     @RollingSetupMarker
@@ -48,7 +67,7 @@ class Rolling private constructor(
             paint = framePaint
         )
 
-        fun circularLane(block: CircularLaneSetup.() -> Unit) {
+        fun lane(block: CircularLaneSetup.() -> Unit) {
             circularLaneSetup.block()
         }
 
