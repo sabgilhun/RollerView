@@ -30,7 +30,7 @@ class RollerView : View {
         rolling?.let {
             when (it.rollerEngine.status) {
                 RollerEngineStatus.READY -> {
-                    it.focusFrame.draw(canvas, lastOutput)
+                    it.focusFrame.draw(canvas, 0f)
                 }
                 RollerEngineStatus.STARTED -> {
                     lastOutput = it.rollerEngine.output
