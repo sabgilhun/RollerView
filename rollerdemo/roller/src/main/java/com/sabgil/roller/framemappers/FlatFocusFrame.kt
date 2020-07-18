@@ -1,17 +1,20 @@
 package com.sabgil.roller.framemappers
 
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Rect
 import com.sabgil.roller.models.CircularLane
 
 class FlatFocusFrame(
     private val definedWidth: Int,
     private val definedHeight: Int,
-    private val circularLane: CircularLane
+    private val circularLane: CircularLane,
+    private val paint: Paint?
 ) : FocusFrame {
     private var viewWidth = 0
     private var viewHeight = 0
-    private var frameRect: Rect = Rect()
+
+    private var rect: Rect = Rect()
     private var leadingSpace = 0
     private var trailingSpace = 0
     private var firstItemBoundary = 0
@@ -21,41 +24,66 @@ class FlatFocusFrame(
         if (this.viewHeight != viewHeight || this.viewWidth != viewWidth) {
             this.viewHeight = viewHeight
             this.viewWidth = viewWidth
-            updateFrameRect()
-            circularLane.resize(frameRect.width(), frameRect.height())
+            updatePosition()
+            updateCircularLane()
         }
     }
 
     override fun draw(canvas: Canvas, progress: Float) {
         val position = calcCurrentPosWithProgress(1 - progress, circularLane)
         val displayItemRange = calcDisplayItemRange(position)
-        val offset = calcViewPosDiff(position)
 
         for (i in displayItemRange) {
-            val diff = calcItemTopPos(i) - offset
+            val diff = calcItemTopPos(i) - position
             val drawable = circularLane.getCircularItem(i)
-            drawable.bounds = Rect(frameRect).apply { offset(0, diff) }
+            drawable.bounds = Rect(rect).apply { offset(0, diff) }
             drawable.draw(canvas)
         }
+
+        paint?.let { canvas.drawRect(rect, it) }
     }
 
-    private fun updateFrameRect() {
-        val (start, end) = coerce(viewWidth, definedWidth)
-        val (top, bottom) = coerce(viewHeight, definedHeight)
-        frameRect = Rect(start, top, end, bottom)
-        leadingSpace = (viewHeight - frameRect.height()) / 2
-        trailingSpace = (viewHeight + frameRect.height()) / 2
-        firstItemBoundary = leadingSpace + frameRect.height()
-        lastItemBoundary = trailingSpace + frameRect.height()
+    private fun updatePosition() {
+        val (start, end) = coerceWidth(viewWidth, definedWidth)
+        val (top, bottom) = coerceHeight(viewHeight, definedHeight)
+        val height = bottom - top
+        calcExtraSpace(height)
+        calcBoundary(height)
+        calcRect(start, end, top, bottom)
     }
 
-    private fun coerce(limit: Int, actual: Int): Pair<Int, Int> =
+    private fun calcRect(start: Int, end: Int, top: Int, bottom: Int) {
+        rect = Rect(start, top + leadingSpace, end, bottom + leadingSpace)
+    }
+
+    private fun calcExtraSpace(height: Int) {
+        leadingSpace = (viewHeight - height) / 2
+        trailingSpace = (viewHeight + height) / 2
+    }
+
+    private fun calcBoundary(height: Int) {
+        firstItemBoundary = leadingSpace + height
+        lastItemBoundary = trailingSpace + height
+    }
+
+    private fun updateCircularLane() {
+        circularLane.resize(rect.width(), rect.height())
+    }
+
+    private fun coerceWidth(limit: Int, actual: Int): Pair<Int, Int> =
         if (limit <= actual) {
-            0 to viewWidth
+            0 to limit
         } else {
-            val paddingStart = (viewWidth - definedWidth) / 2
-            val paddingEnd = viewWidth - definedWidth - paddingStart
-            paddingStart to viewWidth - paddingEnd
+            val paddingStart = (limit - actual) / 2
+            val paddingEnd = limit - actual - paddingStart
+            paddingStart to limit - paddingEnd
+        }
+
+    private fun coerceHeight(limit: Int, actual: Int): Pair<Int, Int> =
+        if (limit <= actual) {
+            0 to limit
+        } else {
+            0 to actual
         }
 
     private fun calcCurrentPosWithProgress(progress: Float, circularLane: CircularLane): Int =
@@ -101,5 +129,5 @@ class FlatFocusFrame(
         return innerIndex - 1
     }
 
-    private fun calcItemTopPos(index: Int) = index * frameRect.height()
+    private fun calcItemTopPos(index: Int) = index * rect.height()
 }

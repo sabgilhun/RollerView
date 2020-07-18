@@ -1,5 +1,7 @@
 package com.sabgil.rollerdemo
 
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sabgil.roller.RollerView
@@ -18,6 +20,11 @@ class MainActivity : AppCompatActivity() {
             focusFrame {
                 width = 200
                 height = 200
+                framePaint = Paint().apply {
+                    color = Color.DKGRAY
+                    style = Paint.Style.STROKE
+                    strokeWidth = 5f
+                }
 
                 circularLane {
                     images(

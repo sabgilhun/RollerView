@@ -1,6 +1,7 @@
 package com.sabgil.roller.models
 
 import android.content.Context
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
@@ -35,12 +36,14 @@ class Rolling private constructor(
     class FocusFrameSetup {
         var width: Int = 0
         var height: Int = 0
+        var framePaint: Paint? = null
         var circularLaneSetup: CircularLaneSetup = CircularLaneSetup()
 
         fun build() = FlatFocusFrame(
             definedWidth = width,
             definedHeight = height,
-            circularLane = circularLaneSetup.build()
+            circularLane = circularLaneSetup.build(),
+            paint = framePaint
         )
 
         fun circularLane(block: CircularLaneSetup.() -> Unit) {
