@@ -22,7 +22,6 @@ class RollerView : View {
         defStyleAttr: Int
     ) : super(context, attrs, defStyleAttr)
 
-
     private var rolling: Rolling? = null
 
     override fun onDraw(canvas: Canvas) {
@@ -33,11 +32,11 @@ class RollerView : View {
                     /* do nothing */
                 }
                 Status.STARTED -> {
-                    it.frame.draw(canvas, it.rollerEngine.output, it.lane)
+                    it.focusFrame.draw(canvas, it.rollerEngine.output)
                     invalidate()
                 }
                 Status.FINISHED -> {
-                    it.frame.draw(canvas, 1f, it.lane)
+                    it.focusFrame.draw(canvas, 1f)
                 }
             }
         }
@@ -45,15 +44,8 @@ class RollerView : View {
 
     fun roll(rolling: Rolling) {
         this.rolling = rolling
+        rolling.focusFrame.resize(width, height)
         rolling.rollerEngine.start()
-        syncSize()
         invalidate()
-    }
-
-    private fun syncSize() {
-        this.rolling?.let {
-            it.frame.resize(width, height)
-            it.lane.resize(width, 394)
-        }
     }
 }

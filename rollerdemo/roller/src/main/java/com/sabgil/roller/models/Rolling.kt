@@ -1,17 +1,17 @@
 package com.sabgil.roller.models
 
 import android.content.Context
+import android.graphics.drawable.Drawable
 import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.sabgil.roller.engines.NormalRollerEngine
 import com.sabgil.roller.engines.RollerEngine
-import com.sabgil.roller.framemappers.FlatFrame
-import com.sabgil.roller.framemappers.Frame
+import com.sabgil.roller.framemappers.FlatFocusFrame
+import com.sabgil.roller.framemappers.FocusFrame
 
 class Rolling private constructor(
     val rollerEngine: RollerEngine,
-    val frame: Frame,
-    val lane: Lane
+    val focusFrame: FocusFrame
 ) {
     @DslMarker
     annotation class RollingSetupMarker
@@ -19,20 +19,46 @@ class Rolling private constructor(
     @RollingSetupMarker
     class RollingSetup {
         private var rollerEngine: RollerEngine = NormalRollerEngine()
-        private var frame: Frame = FlatFrame()
-        private var lane: Lane? = null
+        private var focusFrameSetup: FocusFrameSetup = FocusFrameSetup()
 
-        fun images(context: Context, @DrawableRes vararg drawableId: Int) {
-            lane = Lane(drawableId.map {
-                requireNotNull(ContextCompat.getDrawable(context, it))
-            }.toList())
+        fun focusFrame(block: FocusFrameSetup.() -> Unit) {
+            focusFrameSetup.block()
         }
 
         fun build() = Rolling(
             rollerEngine = this.rollerEngine,
-            frame = this.frame,
-            lane = requireNotNull(this.lane) { "lane value cannot be null" }
+            focusFrame = this.focusFrameSetup.build()
         )
+    }
+
+    @RollingSetupMarker
+    class FocusFrameSetup {
+        var width: Int = 0
+        var height: Int = 0
+        var circularLaneSetup: CircularLaneSetup = CircularLaneSetup()
+
+        fun build() = FlatFocusFrame(
+            definedWidth = width,
+            definedHeight = height,
+            circularLane = circularLaneSetup.build()
+        )
+
+        fun circularLane(block: CircularLaneSetup.() -> Unit) {
+            circularLaneSetup.block()
+        }
+
+        @RollingSetupMarker
+        class CircularLaneSetup {
+            private var drawables: List<Drawable> = emptyList()
+
+            fun images(context: Context, @DrawableRes vararg drawableId: Int) {
+                drawables = drawableId.map {
+                    requireNotNull(ContextCompat.getDrawable(context, it))
+                }.toList()
+            }
+
+            fun build() = CircularLane(drawables)
+        }
     }
 }
 
