@@ -3,10 +3,14 @@ package com.sabgil.roller.frames
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import com.sabgil.roller.helper.coerceLimit
+import com.sabgil.roller.helper.coerceOrInset
+import com.sabgil.roller.helper.findFirstItemIndex
+import com.sabgil.roller.helper.findLastItemIndex
 import com.sabgil.roller.models.CircularLane
 import com.sabgil.roller.models.Orientation
 
-class FlatFocusFrame(
+class FlatVerticalFocusFrame(
     orientation: Orientation,
     private val definedWidth: Int,
     private val definedHeight: Int,
@@ -17,6 +21,9 @@ class FlatFocusFrame(
     private val orientation: Int = when (orientation) {
         Orientation.UP -> 1
         Orientation.DOWN -> -1
+        else -> throw IllegalStateException(
+            "Orientation value of vertical frame must not be LEFT or RIGHT"
+        )
     }
 
     private var viewWidth = 0
@@ -52,8 +59,8 @@ class FlatFocusFrame(
     }
 
     private fun updatePosition() {
-        val (start, end) = coerceWidth(viewWidth, definedWidth)
-        val (top, bottom) = coerceHeight(viewHeight, definedHeight)
+        val (start, end) = coerceOrInset(viewWidth, definedWidth)
+        val (top, bottom) = coerceLimit(viewHeight, definedHeight)
         val height = bottom - top
         calcExtraSpace(height)
         calcBoundary(height)
@@ -78,61 +85,22 @@ class FlatFocusFrame(
         circularLane.resize(rect.height())
     }
 
-    private fun coerceWidth(limit: Int, actual: Int): Pair<Int, Int> =
-        if (limit <= actual) {
-            0 to limit
-        } else {
-            val paddingStart = (limit - actual) / 2
-            val paddingEnd = limit - actual - paddingStart
-            paddingStart to limit - paddingEnd
-        }
-
-    private fun coerceHeight(limit: Int, actual: Int): Pair<Int, Int> =
-        if (limit <= actual) {
-            0 to limit
-        } else {
-            0 to actual
-        }
-
     private fun calCurFocusPosition(progress: Float, circularLane: CircularLane): Int =
         (progress * circularLane.totalLen).toInt()
 
     private fun calcDisplayItemRange(progress: Int): IntRange {
-        val first = findFirstItemIndex(progress - firstItemBoundary)
-        val last = findLastItemIndex(first, progress + lastItemBoundary)
+        val first = findFirstItemIndex(
+            progress - firstItemBoundary,
+            this::calcItemTopPos
+        )
+
+        val last = findLastItemIndex(
+            first,
+            progress + lastItemBoundary,
+            this::calcItemTopPos
+        )
+
         return first..last
-    }
-
-    private fun findFirstItemIndex(diff: Int): Int {
-        fun checkPreviousItem(): Int {
-            var innerIndex = -1
-            while (calcItemTopPos(innerIndex) > diff) {
-                innerIndex--
-            }
-            return innerIndex + 1
-        }
-
-        fun checkNextItem(): Int {
-            var innerIndex = 1
-            while (calcItemTopPos(innerIndex) < diff) {
-                innerIndex++
-            }
-            return innerIndex
-        }
-
-        return if (calcItemTopPos(0) > diff) {
-            checkPreviousItem()
-        } else {
-            checkNextItem()
-        }
-    }
-
-    private fun findLastItemIndex(initIndex: Int, diff: Int): Int {
-        var innerIndex = initIndex
-        while (calcItemTopPos(innerIndex) < diff) {
-            innerIndex++
-        }
-        return innerIndex - 1
     }
 
     private fun calcItemTopPos(index: Int) = index * rect.height()

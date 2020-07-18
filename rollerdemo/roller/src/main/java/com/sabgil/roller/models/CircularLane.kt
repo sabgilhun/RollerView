@@ -11,8 +11,8 @@ class CircularLane(
     private val circularItems = CircularList(items)
     var totalLen: Int = 0
 
-    fun resize(height: Int) {
-        this.totalLen = height * (circularItems.size * numberOfCycle + targetIndex)
+    fun resize(individualLength: Int) {
+        this.totalLen = individualLength * (circularItems.size * numberOfCycle + targetIndex)
     }
 
     fun getItem(index: Int): Drawable = circularItems[index]

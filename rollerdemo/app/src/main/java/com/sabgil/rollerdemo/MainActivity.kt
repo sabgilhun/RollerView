@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
         val rolling = rolling(this) {
 
             engine {
-                duration = 3000L
+                duration = 5000L
                 type = RollerEngineType.NORMAL
                 onRollingStart = {
                     Toast.makeText(this@MainActivity, "start", Toast.LENGTH_SHORT).show()
@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             frame {
-                orientation = Orientation.DOWN
-                width = 250
-                height = 250
+                orientation = Orientation.LEFT
+                width = 150
+                height = 150
                 framePaint = Paint().apply {
                     color = Color.DKGRAY
                     style = Paint.Style.STROKE

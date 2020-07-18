@@ -1,6 +1,7 @@
 package com.sabgil.roller.engines
 
 import android.animation.ValueAnimator
+import android.view.animation.OvershootInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import com.sabgil.roller.models.RollerEngineStatus

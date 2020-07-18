@@ -1,5 +1,5 @@
 package com.sabgil.roller.models
 
 enum class Orientation {
-    UP, DOWN
+    UP, DOWN, LEFT, RIGHT
 }
