@@ -1,13 +1,15 @@
 package com.sabgil.roller.engines
 
 import android.animation.ValueAnimator
+import android.view.animation.*
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 
 class NormalRollerEngine : RollerEngine {
 
     private val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-        duration = 1000
+        duration = 3000
+        interpolator = AnticipateOvershootInterpolator()
         doOnStart {
             _status = Status.STARTED
         }

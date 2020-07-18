@@ -53,7 +53,7 @@ class RollerView : View {
     private fun syncSize() {
         this.rolling?.let {
             it.frame.resize(width, height)
-            it.lane.resize(width, height)
+            it.lane.resize(width, 394)
         }
     }
 }
