@@ -18,10 +18,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val rollerView = findViewById<RollerView>(R.id.rollerView)
-        val rolling = rolling {
+        val items = listOf(
+            R.drawable.roller_alligator_100,
+            R.drawable.roller_cat_100,
+            R.drawable.roller_corgi_100,
+            R.drawable.roller_dove_100,
+            R.drawable.roller_duck_100,
+            R.drawable.roller_elephant_100,
+            R.drawable.roller_german_shepherd_100,
+            R.drawable.roller_horse_100,
+            R.drawable.roller_octopus_100,
+            R.drawable.roller_reindeer_100,
+            R.drawable.roller_sheep_100,
+            R.drawable.roller_teddy_bear_100
+        )
+        val rolling = rolling(this) {
 
             engine {
-                duration = 2000L
+                duration = 3000L
                 type = RollerEngineType.NORMAL
                 onRollingStart = {
                     Toast.makeText(this@MainActivity, "start", Toast.LENGTH_SHORT).show()
@@ -38,28 +52,13 @@ class MainActivity : AppCompatActivity() {
                 framePaint = Paint().apply {
                     color = Color.DKGRAY
                     style = Paint.Style.STROKE
-                    strokeWidth = 10f
+                    strokeWidth = 20f
                 }
 
                 lane {
                     targetIndex = 0
                     numberOfCycle = 2
-
-                    images(
-                        this@MainActivity,
-                        R.drawable.roller_alligator_100,
-                        R.drawable.roller_cat_100,
-                        R.drawable.roller_corgi_100,
-                        R.drawable.roller_dove_100,
-                        R.drawable.roller_duck_100,
-                        R.drawable.roller_elephant_100,
-                        R.drawable.roller_german_shepherd_100,
-                        R.drawable.roller_horse_100,
-                        R.drawable.roller_octopus_100,
-                        R.drawable.roller_reindeer_100,
-                        R.drawable.roller_sheep_100,
-                        R.drawable.roller_teddy_bear_100
-                    )
+                    images(items)
                 }
             }
         }

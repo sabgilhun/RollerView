@@ -1,16 +1,17 @@
 package com.sabgil.roller.dsl
 
+import android.content.Context
 import android.graphics.Paint
 import com.sabgil.roller.frames.FlatFocusFrame
 import com.sabgil.roller.models.Orientation
 
 @RollingSetupMarker
-class FocusFrameSetup {
+class FocusFrameSetup(context: Context) {
     var width: Int = 0
     var height: Int = 0
     var framePaint: Paint? = null
     var orientation: Orientation = Orientation.UP
-    var circularLaneSetup: CircularLaneSetup = CircularLaneSetup()
+    var circularLaneSetup: CircularLaneSetup = CircularLaneSetup(context)
 
     fun build() = FlatFocusFrame(
         orientation = orientation,

@@ -1,11 +1,12 @@
 package com.sabgil.roller.dsl
 
+import android.content.Context
 import com.sabgil.roller.models.Rolling
 
 @RollingSetupMarker
-class RollingSetup {
+class RollingSetup(context: Context) {
     private var rollerEngineSetup: RollerEngineSetup = RollerEngineSetup()
-    private var focusFrameSetup: FocusFrameSetup = FocusFrameSetup()
+    private var focusFrameSetup: FocusFrameSetup = FocusFrameSetup(context)
 
     fun engine(block: RollerEngineSetup.() -> Unit) {
         rollerEngineSetup.block()
@@ -21,4 +22,5 @@ class RollingSetup {
     )
 }
 
-fun rolling(block: RollingSetup.() -> Unit) = RollingSetup().apply(block).build()
+fun rolling(context: Context, block: RollingSetup.() -> Unit) =
+    RollingSetup(context).apply(block).build()
