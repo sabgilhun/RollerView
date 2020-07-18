@@ -23,29 +23,40 @@ class RollerView : View {
     ) : super(context, attrs, defStyleAttr)
 
     private var rolling: Rolling? = null
+    private var lastOutput = 0f
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         rolling?.let {
             when (it.rollerEngine.status) {
                 Status.READY -> {
-                    /* do nothing */
+                    it.focusFrame.draw(canvas, lastOutput)
                 }
                 Status.STARTED -> {
-                    it.focusFrame.draw(canvas, it.rollerEngine.output)
+                    lastOutput = it.rollerEngine.output
+                    it.focusFrame.draw(canvas, lastOutput)
                     invalidate()
                 }
                 Status.FINISHED -> {
-                    it.focusFrame.draw(canvas, 1f)
+                    it.focusFrame.draw(canvas, lastOutput)
                 }
             }
         }
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        rolling?.focusFrame?.resize(w, h)
+    }
+
     fun roll(rolling: Rolling) {
         this.rolling = rolling
         rolling.focusFrame.resize(width, height)
-        rolling.rollerEngine.start()
+        invalidate()
+    }
+
+    fun start() {
+        rolling?.rollerEngine?.start()
         invalidate()
     }
 }

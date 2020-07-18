@@ -46,8 +46,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        rollerView.roll(rolling)
+
         startButton.setOnClickListener {
-            rollerView.roll(rolling)
+            rollerView.start()
         }
     }
 }
