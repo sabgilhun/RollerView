@@ -7,8 +7,8 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.sabgil.roller.engines.NormalRollerEngine
 import com.sabgil.roller.engines.RollerEngine
-import com.sabgil.roller.framemappers.FlatFocusFrame
-import com.sabgil.roller.framemappers.FocusFrame
+import com.sabgil.roller.frames.FlatFocusFrame
+import com.sabgil.roller.frames.FocusFrame
 
 class Rolling private constructor(
     val rollerEngine: RollerEngine,

@@ -1,4 +1,4 @@
-package com.sabgil.roller.framemappers
+package com.sabgil.roller.frames
 
 import android.graphics.Canvas
 import android.graphics.Paint
