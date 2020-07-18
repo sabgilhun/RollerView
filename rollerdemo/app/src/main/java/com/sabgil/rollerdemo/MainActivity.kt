@@ -18,15 +18,19 @@ class MainActivity : AppCompatActivity() {
         val rolling = rolling {
 
             focusFrame {
-                width = 200
-                height = 200
+                width = 250
+                height = 250
+
                 framePaint = Paint().apply {
                     color = Color.DKGRAY
                     style = Paint.Style.STROKE
-                    strokeWidth = 5f
+                    strokeWidth = 10f
                 }
 
                 circularLane {
+                    targetIndex = 11
+                    numberOfCycle = 2
+
                     images(
                         this@MainActivity,
                         R.drawable.roller_alligator_100,

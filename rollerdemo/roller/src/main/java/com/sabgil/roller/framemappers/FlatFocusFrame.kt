@@ -11,6 +11,7 @@ class FlatFocusFrame(
     private val circularLane: CircularLane,
     private val paint: Paint?
 ) : FocusFrame {
+
     private var viewWidth = 0
     private var viewHeight = 0
 
@@ -30,7 +31,7 @@ class FlatFocusFrame(
     }
 
     override fun draw(canvas: Canvas, progress: Float) {
-        val position = calCurFocusPosition(1 - progress, circularLane)
+        val position = calCurFocusPosition(progress, circularLane)
         val displayItemRange = calcDisplayItemRange(position)
 
         for (i in displayItemRange) {

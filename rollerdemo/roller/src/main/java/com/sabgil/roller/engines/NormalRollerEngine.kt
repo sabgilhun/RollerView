@@ -8,7 +8,7 @@ import androidx.core.animation.doOnStart
 
 class NormalRollerEngine : RollerEngine {
 
-    private val valueAnimator = ValueAnimator.ofFloat(0f, 2f).apply {
+    private val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
         duration = 3000
         doOnStart {
             _status = Status.STARTED
