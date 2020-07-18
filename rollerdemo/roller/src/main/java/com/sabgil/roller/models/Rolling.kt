@@ -60,7 +60,10 @@ class Rolling private constructor(
                 }.toList()
             }
 
-            fun build() = CircularLane(drawables)
+            fun build(): CircularLane {
+                require(drawables.isNotEmpty()) { "rolling items must not empty." }
+                return CircularLane(drawables)
+            }
         }
     }
 }

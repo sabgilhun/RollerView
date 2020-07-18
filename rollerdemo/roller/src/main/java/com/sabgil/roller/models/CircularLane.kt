@@ -2,28 +2,27 @@ package com.sabgil.roller.models
 
 import android.graphics.drawable.Drawable
 
-class CircularLane(private val items: List<Drawable>) {
+class CircularLane(items: List<Drawable>) {
 
-    var length: Int = 0
-    private var width: Int = 0
-    private var height: Int = 0
+    private val circularItems = CircularList(items)
+    var totalLen: Int = 0
 
-    fun resize(width: Int, height: Int) {
-        this.length = height * items.size
-        this.width = width
-        this.height = height
+    fun resize(height: Int) {
+        this.totalLen = height * circularItems.size
     }
 
-    fun getCircularItem(index: Int): Drawable {
-        return items[
-                when {
-                    index >= items.size -> index % items.size
-                    index < 0 -> when (val mod = index % items.size) {
-                        0 -> 0
-                        else -> items.size + mod
-                    }
-                    else -> index
-                }
-        ]
+    fun getItem(index: Int): Drawable = circularItems[index]
+
+    private class CircularList<T>(private val elements: List<T>) {
+
+        val size = elements.size
+
+        private fun mapToCircularIndex(index: Int): Int = when {
+            index >= elements.size -> index % elements.size
+            index < 0 -> (index % elements.size).let { if (it == 0) 0 else elements.size + it }
+            else -> index
+        }
+
+        operator fun get(index: Int) = elements[mapToCircularIndex(index)]
     }
 }

@@ -35,7 +35,7 @@ class FlatFocusFrame(
 
         for (i in displayItemRange) {
             val diff = calcItemTopPos(i) - position
-            val drawable = circularLane.getCircularItem(i)
+            val drawable = circularLane.getItem(i)
             drawable.bounds = Rect(rect).apply { offset(0, diff) }
             drawable.draw(canvas)
         }
@@ -67,7 +67,7 @@ class FlatFocusFrame(
     }
 
     private fun updateCircularLane() {
-        circularLane.resize(rect.width(), rect.height())
+        circularLane.resize(rect.height())
     }
 
     private fun coerceWidth(limit: Int, actual: Int): Pair<Int, Int> =
@@ -87,7 +87,7 @@ class FlatFocusFrame(
         }
 
     private fun calCurFocusPosition(progress: Float, circularLane: CircularLane): Int =
-        (progress * circularLane.length).toInt()
+        (progress * circularLane.totalLen).toInt()
 
     private fun calcDisplayItemRange(progress: Int): IntRange {
         val first = findFirstItemIndex(progress - firstItemBoundary)
