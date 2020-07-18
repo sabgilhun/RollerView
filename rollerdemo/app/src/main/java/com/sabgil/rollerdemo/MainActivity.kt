@@ -5,6 +5,7 @@ import android.graphics.Paint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.sabgil.roller.RollerView
+import com.sabgil.roller.models.Orientation
 import com.sabgil.roller.models.rolling
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         val rolling = rolling {
 
             focusFrame {
+                orientation = Orientation.DOWN
                 width = 250
                 height = 250
 
@@ -28,7 +30,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 circularLane {
-                    targetIndex = 11
+                    targetIndex = 0
                     numberOfCycle = 2
 
                     images(

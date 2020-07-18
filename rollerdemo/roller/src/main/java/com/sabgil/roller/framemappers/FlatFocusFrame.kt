@@ -4,13 +4,20 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import com.sabgil.roller.models.CircularLane
+import com.sabgil.roller.models.Orientation
 
 class FlatFocusFrame(
+    orientation: Orientation,
     private val definedWidth: Int,
     private val definedHeight: Int,
     private val circularLane: CircularLane,
     private val paint: Paint?
 ) : FocusFrame {
+
+    private val orientation: Int = when (orientation) {
+        Orientation.UP -> 1
+        Orientation.DOWN -> -1
+    }
 
     private var viewWidth = 0
     private var viewHeight = 0
@@ -35,7 +42,7 @@ class FlatFocusFrame(
         val displayItemRange = calcDisplayItemRange(position)
 
         for (i in displayItemRange) {
-            val diff = calcItemTopPos(i) - position
+            val diff = (calcItemTopPos(i) - position) * orientation
             val drawable = circularLane.getItem(i)
             drawable.bounds = Rect(rect).apply { offset(0, diff) }
             drawable.draw(canvas)

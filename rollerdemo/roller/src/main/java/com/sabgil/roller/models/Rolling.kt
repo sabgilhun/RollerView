@@ -37,9 +37,11 @@ class Rolling private constructor(
         var width: Int = 0
         var height: Int = 0
         var framePaint: Paint? = null
+        var orientation: Orientation = Orientation.UP
         var circularLaneSetup: CircularLaneSetup = CircularLaneSetup()
 
         fun build() = FlatFocusFrame(
+            orientation = orientation,
             definedWidth = width,
             definedHeight = height,
             circularLane = circularLaneSetup.build(),
