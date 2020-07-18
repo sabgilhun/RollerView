@@ -1,21 +1,22 @@
 package com.sabgil.roller.engines
 
 import android.animation.ValueAnimator
-import android.view.animation.*
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.AccelerateInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 
 class NormalRollerEngine : RollerEngine {
 
-    private val valueAnimator = ValueAnimator.ofFloat(0f, 1f).apply {
-        duration = 5000
-        interpolator = AnticipateOvershootInterpolator()
+    private val valueAnimator = ValueAnimator.ofFloat(0f, 2f).apply {
+        duration = 3000
         doOnStart {
             _status = Status.STARTED
         }
         doOnEnd {
             _status = Status.FINISHED
         }
+
     }
 
     private var _status = Status.READY
@@ -24,7 +25,7 @@ class NormalRollerEngine : RollerEngine {
         get() = _status
 
     override val output: Float
-        get() = valueAnimator.animatedFraction
+        get() = valueAnimator.animatedValue as Float
 
     override fun start() {
         valueAnimator.start()

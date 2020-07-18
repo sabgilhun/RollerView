@@ -30,7 +30,7 @@ class FlatFocusFrame(
     }
 
     override fun draw(canvas: Canvas, progress: Float) {
-        val position = calcCurrentPosWithProgress(1 - progress, circularLane)
+        val position = calCurFocusPosition(1 - progress, circularLane)
         val displayItemRange = calcDisplayItemRange(position)
 
         for (i in displayItemRange) {
@@ -86,10 +86,8 @@ class FlatFocusFrame(
             0 to actual
         }
 
-    private fun calcCurrentPosWithProgress(progress: Float, circularLane: CircularLane): Int =
+    private fun calCurFocusPosition(progress: Float, circularLane: CircularLane): Int =
         (progress * circularLane.length).toInt()
-
-    private fun calcViewPosDiff(progress: Int): Int = progress - leadingSpace
 
     private fun calcDisplayItemRange(progress: Int): IntRange {
         val first = findFirstItemIndex(progress - firstItemBoundary)
