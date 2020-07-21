@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
                 lane {
                     targetIndex = 0
                     numberOfCycle = 2
-                    images(items)
+                    drawableIds(items)
                 }
             }
         }

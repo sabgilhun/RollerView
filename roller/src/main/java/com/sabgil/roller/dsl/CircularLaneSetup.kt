@@ -12,16 +12,20 @@ class CircularLaneSetup(private val context: Context) {
     var numberOfCycle: Int = 1
     var targetIndex: Int = 0
 
-    fun images(@DrawableRes vararg drawableIds: Int) {
+    fun drawableIds(@DrawableRes vararg drawableIds: Int) {
         drawables = drawableIds.map {
             requireDrawable(ContextCompat.getDrawable(context, it))
         }.toList()
     }
 
-    fun images(drawableIds: List<Int>) {
+    fun drawableIds(drawableIds: List<Int>) {
         drawables = drawableIds.map {
             requireDrawable(ContextCompat.getDrawable(context, it))
         }.toList()
+    }
+
+    fun drawables(drawables: List<Drawable>) {
+        this.drawables = drawables.toList()
     }
 
     fun build(): CircularLane {
