@@ -1,11 +1,13 @@
 package com.sabgil.roller.engines
 
 import android.animation.ValueAnimator
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import com.sabgil.roller.models.RollerEngineStatus
 
-class OverShootRollerEngine : RollerEngine {
+class AccelerateDecelerateRollerEngine : RollerEngine {
 
     private var _status = RollerEngineStatus.READY
     private var _duration: Long = 1000L
@@ -15,6 +17,7 @@ class OverShootRollerEngine : RollerEngine {
     private val valueAnimator =
         ValueAnimator.ofFloat(0f, 1f).apply {
             this.duration = duration
+            interpolator = AccelerateDecelerateInterpolator()
             doOnStart {
                 _status = RollerEngineStatus.STARTED
                 onRollingStart?.invoke()
@@ -35,6 +38,7 @@ class OverShootRollerEngine : RollerEngine {
         get() = _duration
         set(value) {
             _duration = value
+            valueAnimator.duration = value
         }
 
     override var onRollingStart: (() -> Unit)?

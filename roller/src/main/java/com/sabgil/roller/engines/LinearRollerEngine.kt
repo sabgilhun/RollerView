@@ -14,7 +14,6 @@ class LinearRollerEngine : RollerEngine {
 
     private val valueAnimator =
         ValueAnimator.ofFloat(0f, 1f).apply {
-            this.duration = duration
             doOnStart {
                 _status = RollerEngineStatus.STARTED
                 onRollingStart?.invoke()
@@ -35,6 +34,7 @@ class LinearRollerEngine : RollerEngine {
         get() = _duration
         set(value) {
             _duration = value
+            valueAnimator.duration = value
         }
 
     override var onRollingStart: (() -> Unit)?

@@ -11,19 +11,63 @@
 		android:layout_width="0dp"
 		android:layout_height="0dp"
 		android:padding="30dp"
-		app:layout_constraintBottom_toTopOf="@id/startButton"
+		app:layout_constraintBottom_toTopOf="@id/buttonLayout"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintTop_toTopOf="parent" />
 	
+	<LinearLayout
+		android:id="@+id/buttonLayout"
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		app:layout_constraintBottom_toTopOf="@id/startButton"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintStart_toStartOf="parent"
+		app:layout_constraintTop_toBottomOf="@id/rollerView">
+		
+		<Button
+			android:id="@+id/upButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="4dp"
+			android:layout_weight="1"
+			android:text="UP" />
+		
+		<Button
+			android:id="@+id/downButton"
+			
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="4dp"
+			android:layout_weight="1"
+			android:text="DOWN" />
+		
+		<Button
+			android:id="@+id/leftButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="4dp"
+			android:layout_weight="1"
+			android:text="LEFT" />
+		
+		<Button
+			android:id="@+id/rightButton"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_margin="4dp"
+			android:layout_weight="1"
+			android:text="RIGHT" />
+	</LinearLayout>
+	
 	<Button
 		android:id="@+id/startButton"
-		android:layout_width="wrap_content"
+		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:layout_margin="16dp"
-		android:text="start!"
+		android:layout_margin="4dp"
+		android:text="START"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
-		app:layout_constraintTop_toBottomOf="@id/rollerView" />
+		app:layout_constraintTop_toBottomOf="@id/buttonLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
