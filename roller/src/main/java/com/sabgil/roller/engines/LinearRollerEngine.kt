@@ -1,16 +1,14 @@
 package com.sabgil.roller.engines
 
 import android.animation.ValueAnimator
-import android.view.animation.OvershootInterpolator
 import androidx.core.animation.doOnEnd
 import androidx.core.animation.doOnStart
 import com.sabgil.roller.models.RollerEngineStatus
 
-class NormalRollerEngine(
-    duration: Long = 3000L
-) : RollerEngine {
+class LinearRollerEngine : RollerEngine {
 
     private var _status = RollerEngineStatus.READY
+    private var _duration: Long = 1000L
     private var _onRollingStart: (() -> Unit)? = null
     private var _onRollingEnd: (() -> Unit)? = null
 
@@ -32,6 +30,12 @@ class NormalRollerEngine(
 
     override val output: Float
         get() = valueAnimator.animatedValue as Float
+
+    override var duration: Long
+        get() = _duration
+        set(value) {
+            _duration = value
+        }
 
     override var onRollingStart: (() -> Unit)?
         get() = _onRollingStart

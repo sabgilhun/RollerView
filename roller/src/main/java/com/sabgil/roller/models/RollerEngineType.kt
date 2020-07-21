@@ -1,5 +1,5 @@
 package com.sabgil.roller.models
 
 enum class RollerEngineType {
-    NORMAL
+    NORMAL, OVER_SHOOT, CUSTOM
 }

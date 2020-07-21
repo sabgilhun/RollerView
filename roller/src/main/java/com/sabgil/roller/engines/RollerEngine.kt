@@ -8,6 +8,8 @@ interface RollerEngine {
 
     val output: Float
 
+    var duration: Long
+
     var onRollingStart: (() -> Unit)?
 
     var onRollingEnd: (() -> Unit)?
