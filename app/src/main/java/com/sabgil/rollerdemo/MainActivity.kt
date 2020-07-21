@@ -32,29 +32,22 @@ class MainActivity : AppCompatActivity() {
             R.drawable.roller_sheep_100,
             R.drawable.roller_teddy_bear_100
         )
-        val rolling = rolling(this) {
 
+        val upRolling = rolling(this) {
             engine {
-                duration = 5000L
-                type = RollerEngineType.NORMAL
-                onRollingStart = {
+                duration = 1000L
+                type = RollerEngineType.OVER_SHOOT
+                onRollingStart {
                     Toast.makeText(this@MainActivity, "start", Toast.LENGTH_SHORT).show()
                 }
-                onRollingEnd = {
+                onRollingEnd {
                     Toast.makeText(this@MainActivity, "end", Toast.LENGTH_SHORT).show()
                 }
             }
-
             frame {
-                orientation = Orientation.LEFT
+                orientation = Orientation.UP
                 width = 150
                 height = 150
-                framePaint = Paint().apply {
-                    color = Color.DKGRAY
-                    style = Paint.Style.STROKE
-                    strokeWidth = 20f
-                }
-
                 lane {
                     targetIndex = 0
                     numberOfCycle = 2
@@ -63,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        rollerView.roll(rolling)
+        rollerView.roll(upRolling)
 
         startButton.setOnClickListener {
             rollerView.start()

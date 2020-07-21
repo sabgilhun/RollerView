@@ -9,9 +9,17 @@ import com.sabgil.roller.models.RollerEngineType
 class RollerEngineSetup {
     var type: RollerEngineType = RollerEngineType.NORMAL
     var duration: Long = 1000L
-    var onRollingStart: (() -> Unit)? = null
-    var onRollingEnd: (() -> Unit)? = null
+    private var onRollingStart: (() -> Unit)? = null
+    private var onRollingEnd: (() -> Unit)? = null
     var customRollerEngine: RollerEngine? = null
+
+    fun RollerEngineSetup.onRollingStart(block: () -> Unit) {
+        onRollingStart = block
+    }
+
+    fun RollerEngineSetup.onRollingEnd(block: () -> Unit) {
+        onRollingEnd = block
+    }
 
     fun build() = when (type) {
         RollerEngineType.NORMAL -> LinearRollerEngine().setupRollerEngine()
